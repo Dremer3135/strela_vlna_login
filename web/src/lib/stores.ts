@@ -17,3 +17,17 @@ export const contestsStore = readable<Contest[]>([], (set) => {
             set([]);
         });
 });
+
+// Teams Store
+export const teamsStore = writable<RecordModel[]>([]);
+
+export async function fetchTeams(teacherId: string) {
+    try {
+        const teams = await pb.collection('teams').getFullList({
+            filter: `teacher = "${teacherId}"`,
+        });
+        teamsStore.set(teams);
+    } catch (err) {
+        console.error('Error fetching teams:', err);
+    }
+}

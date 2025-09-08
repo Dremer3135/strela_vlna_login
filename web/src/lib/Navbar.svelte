@@ -11,23 +11,29 @@
         dispatch('showAuth');
     }
 
+    function logout() {
+        pb.authStore.clear();
+    }
+
+    function toggleTeamsPanel() {
+        dispatch('toggleTeamsPanel');
+    }
+
     onMount(() => {
-        // console.log(currentUser && pb.authStore.isValid && currentUser?.verified);
         console.log(currentUser);
-        // console.log(pb.authStore.isValid);
-        // console.log(currentUser);
     })
 </script>
 
 <main>
-    <img src={logo}>
+    <img src={logo} alt="Strela Vlna Logo">
     <div class="right-section">
         {#if currentUser && pb.authStore.isValid && currentUser?.verified}
-            <button class="my_teams">Moje tymy</button>
+            <button class="my_teams" on:click={toggleTeamsPanel}>Moje tymy</button>
+            <button class="logout" on:click={logout}>Logout</button>
         {:else}
-            <img src={for_teachers}>
+            <img src={for_teachers} alt="For Teachers">
             <button class="register" on:click={showAuth}>Registrovat <span class="desaturated">nebo</span> Přihlásit</button>
-        {/if}    
+        {/if}
     </div>
 </main>
 
@@ -36,45 +42,37 @@
         height: 120px;
         background-image: linear-gradient(to right, #003F88 0%, #33008B 100%);
         width: 100%;
-
         display: flex;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-
         padding-inline: 50px;
-
         box-sizing: border-box;
     }
 
     button.register {
         all: unset;
-
         text-align: center;
         max-width: 115px;
-
         font-family: 'Lexend';
         font-weight: bold;
         font-size: 16px;
         color: white;
-
         cursor: pointer;
     }
+
     button.register .desaturated {
         color: #9FA6D4;
     }
 
     button.my_teams {
         all: unset;
-
         text-align: center;
         max-width: 115px;
-
         font-family: 'Lexend';
         font-weight: bold;
         font-size: 16px;
         color: white;
-
         cursor: pointer;
     }
 
@@ -82,5 +80,15 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+    }
+
+    button.logout {
+        all: unset;
+        font-family: 'Lexend';
+        font-weight: bold;
+        font-size: 16px;
+        color: white;
+        cursor: pointer;
+        margin-left: 2rem;
     }
 </style>

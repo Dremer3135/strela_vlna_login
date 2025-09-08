@@ -56,11 +56,11 @@
   <div class="auth-modal-content" on:click|stopPropagation>
     {#if step === "initial"}
       <form on:submit|preventDefault={handleInitialSubmit}>
-        <h2>Login or Register</h2>
+        <h2>Prihlasit nebo registrovat</h2>
         <input type="email" placeholder="Email" bind:value={email} required />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Heslo"
           bind:value={password}
           required
         />
@@ -68,21 +68,21 @@
       </form>
     {:else if step === "register"}
       <form on:submit|preventDefault={handleRegisterSubmit}>
-        <h2>Complete Registration</h2>
+        <h2>Dokoncete registraci</h2>
         <input type="email" bind:value={email} disabled />
         <input
           type="password"
-          placeholder="Password"
+          placeholder="Heslo"
           bind:value={password}
           required
         />
         <input
           type="password"
-          placeholder="Confirm Password"
+          placeholder="Podtvrdte Heslo"
           bind:value={passwordConfirm}
           required
         />
-        <input type="text" placeholder="School" bind:value={school} required />
+        <input type="text" placeholder="Skola" bind:value={school} required />
         <button type="submit">Register</button>
       </form>
     {/if}
@@ -115,8 +115,17 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding: 20px 10px;
   }
   .error {
     color: red;
+  }
+
+  form input {
+    all: unset;
+    padding: 10px 5px;
+  }
+  form input:active {
+    border-bottom: 2px black;
   }
 </style>
