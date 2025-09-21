@@ -21,19 +21,21 @@
 </div>
 
 <style>
+
   .teams-panel {
     position: fixed;
     top: 0;
     right: 0;
     width: 300px;
     height: 100%;
-    background-color: #003f88;
-    color: white;
+    background-color: white;
+    color: black;
     padding: 1rem;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    /* box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5); */
     z-index: 101;
     display: flex;
     flex-direction: column;
+    font-family: "Lexend";
   }
   .teams-panel-header {
     display: flex;

@@ -1,9 +1,12 @@
 <script lang="ts">
   import { pb } from "./pocketbase";
   import { createEventDispatcher, onMount } from "svelte";
-  import { contestsStore, authStore } from "./stores";
+  import { authStore } from "./stores";
+  import type { Contest } from "./types";
 
   const dispatch = createEventDispatcher();
+
+  export let contest: Contest;
 
   let name = "";
   let player1email = "";
@@ -11,13 +14,18 @@
   let player3email = "";
   let player4email = "";
   let player5email = "";
-  let contest = "";
   let error = "";
+
+  onMount(() => {
+      if (!contest) {
+          error = "Contest object is missing.";
+      }
+  });
 
   async function handleAddTeam() {
     error = "";
-    if (!name || !contest) {
-      error = "Team name and contest are required.";
+    if (!name) {
+      error = "Team name is required.";
       return;
     }
 
@@ -29,9 +37,10 @@
         player3email,
         player4email,
         player5email,
-        contest,
+        contest: contest.id,
         teacher: $authStore?.id,
       });
+      dispatch("created");
       dispatch("close");
     } catch (err) {
       console.error("Add Team Error:", err);
@@ -42,21 +51,15 @@
 
 <div class="modal-backdrop" on:click={() => dispatch("close")}>
   <div class="modal-content" on:click|stopPropagation>
-    <h2>Add New Team</h2>
+    <h2 class="title">Registrovat tym do:<br> <span class="contest-name">{contest.name}</span></h2>
     <form on:submit|preventDefault={handleAddTeam}>
-      <input type="text" placeholder="Team Name" bind:value={name} required />
-      <select bind:value={contest} required>
-        <option value="" disabled>Select a contest</option>
-        {#each $contestsStore as c}
-          <option value={c.id}>{c.name}</option>
-        {/each}
-      </select>
-      <input type="email" placeholder="Player 1 Email" bind:value={player1email} />
-      <input type="email" placeholder="Player 2 Email" bind:value={player2email} />
-      <input type="email" placeholder="Player 3 Email" bind:value={player3email} />
-      <input type="email" placeholder="Player 4 Email" bind:value={player4email} />
-      <input type="email" placeholder="Player 5 Email" bind:value={player5email} />
-      <button type="submit">Add Team</button>
+      <input class="team-name" type="text" placeholder="Nazev tymu" bind:value={name} required />
+      <input class="email1" type="email" placeholder="Email hrace 1" bind:value={player1email} />
+      <input class="email2" type="email" placeholder="Email hrace 2" bind:value={player2email} />
+      <input class="email3" type="email" placeholder="Email hrace 3" bind:value={player3email} />
+      <input class="email4" type="email" placeholder="Email hrace 4" bind:value={player4email} />
+      <input class="email5" type="email" placeholder="Email hrace 5" bind:value={player5email} />
+      <button type="submit">Registrovat</button>
     </form>
     {#if error}
       <p class="error">{error}</p>
@@ -65,6 +68,18 @@
 </div>
 
 <style>
+  .title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #6a83a0;
+    font-family: "Lexend";
+  }
+  .contest-name {
+    color: #1c3047;
+    font-weight: 800;
+    font-size: 30px;
+    font-family: "Fredoka";
+  }
   .modal-backdrop {
     position: fixed;
     top: 0;
@@ -79,9 +94,10 @@
   }
   .modal-content {
     background: white;
-    padding: 2rem;
+    /* padding: 2rem; */
     border-radius: 8px;
     color: #333;
+    padding: 20px 40px;
   }
   form {
     display: flex;
@@ -91,4 +107,34 @@
   .error {
     color: red;
   }
+
+  input {
+    all: unset;
+    padding: 10px 5px;
+    width: 300px;
+  }
+
+  input:hover {
+    background-color: #f8f8f8;
+  }
+
+  .team-name:focus {
+    outline: 3px dashed #EBAD00;
+  }
+  .email1:focus {
+    outline: 3px dashed #EB6E00;
+  }
+  .email2:focus {
+    outline: 3px dashed #EB0072;
+  }
+  .email3:focus {
+    outline: 3px dashed #9500EB;
+  }
+  .email4:focus {
+    outline: 3px dashed #EBAD00;
+  }
+  .email5:focus {
+    outline: 3px dashed #EB6E00;
+  }
+
 </style>

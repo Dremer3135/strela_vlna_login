@@ -8,3 +8,14 @@ export interface Contest {
     name: string;
     type: 'math' | 'physics';
 }
+
+export interface Team {
+    id: string;
+    name: string;
+    player1email: string;
+    player2email: string;
+    player3email: string;
+    player4email: string;
+    player5email: string;
+    contest: string;
+}

@@ -10,6 +10,7 @@
   import blocks_clumped from "./assets/blocks_clumped.svg";
 
   let showAuth = false;
+  let authType: "login" | "register" = "login";
   let showTeamsPanel = false;
   let showAddTeam = false;
   let showTeamDetails = false;
@@ -24,10 +25,10 @@
 </script>
 
 <div id="app">
-  <Navbar currentUser={$authStore} on:showAuth={() => (showAuth = true)} on:toggleTeamsPanel={() => (showTeamsPanel = !showTeamsPanel)} />
+  <Navbar currentUser={$authStore} on:showAuth={(e) => {showAuth = true; authType = e.detail}} on:toggleTeamsPanel={() => (showTeamsPanel = !showTeamsPanel)} />
   
   {#if showAuth}
-    <Auth on:close={() => (showAuth = false)} />
+    <Auth on:close={() => (showAuth = false)} type={authType} />
   {/if}
 
   {#if showTeamsPanel}
@@ -47,22 +48,14 @@
   {/if}
 
   <div class="content-holder">
-    {#if $authStore}
-        <div class="contests-list">
-          {#each $contestsStore as contest}
-            <Contest_simple {contest} />
-          {/each}
-        </div>
-    {:else}
-      <div class="logout-page">
-        <h1 class="upcomming"><span class="anchor"><img src={blocks_clumped} class="blocks-clumped"></span> Nadcházející</h1>
-        <div class="contests-list">
-          {#each $contestsStore as contest}
-            <Contest_simple {contest} />
-          {/each}
-        </div>
+    <div class="logout-page">
+      <h1 class="upcomming"><span class="anchor"><img src={blocks_clumped} class="blocks-clumped"></span> Nadcházející</h1>
+      <div class="contests-list">
+        {#each $contestsStore as contest}
+          <Contest_simple {contest} />
+        {/each}
+      </div>
     </div>
-    {/if}
   </div>
 </div>
 
@@ -70,6 +63,11 @@
   .contests-list {
     margin-top: 2rem;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
   }
 
   .logout-page {
@@ -88,7 +86,7 @@
     font-weight: bold;
     color: #002C5E;
 
-    margin-bottom: 150px;
+    margin-bottom: 100px;
   }
 
   .content-holder {

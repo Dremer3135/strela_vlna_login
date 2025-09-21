@@ -1,5 +1,5 @@
 import { writable, readable } from 'svelte/store';
-import type { Contest } from './types';
+import type { Contest, Team } from './types';
 import { pb } from './pocketbase';
 import type { RecordModel } from 'pocketbase';
 
@@ -19,11 +19,11 @@ export const contestsStore = readable<Contest[]>([], (set) => {
 });
 
 // Teams Store
-export const teamsStore = writable<RecordModel[]>([]);
+export const teamsStore = writable<Team[]>([]);
 
 export async function fetchTeams(teacherId: string) {
     try {
-        const teams = await pb.collection('teams').getFullList({
+        const teams = await pb.collection('teams').getFullList<Team>({
             filter: `teacher = "${teacherId}"`,
         });
         teamsStore.set(teams);

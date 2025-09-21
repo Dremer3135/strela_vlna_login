@@ -9,7 +9,7 @@
   let passwordConfirm = "";
   let school = "";
   let error = "";
-  let step: "initial" | "register" = "initial";
+  export let type: "login" | "register" = "login";
 
   async function handleInitialSubmit() {
     error = "";
@@ -19,8 +19,7 @@
       dispatch("close");
     } catch (err: any) {
       if (err.status === 400) {
-        // User likely does not exist, move to registration
-        step = "register";
+        error = "Zadane udaje nesedi";
       } else {
         error = "Failed to authenticate. Please check your credentials.";
       }
@@ -54,36 +53,42 @@
 
 <div class="auth-modal-backdrop" on:click={() => dispatch("close")}>
   <div class="auth-modal-content" on:click|stopPropagation>
-    {#if step === "initial"}
+    {#if type === "login"}
       <form on:submit|preventDefault={handleInitialSubmit}>
-        <h2>Prihlasit nebo registrovat</h2>
-        <input type="email" placeholder="Email" bind:value={email} required />
+        <h2>Prihlasit se</h2>
+        <input type="email" placeholder="Email" bind:value={email} required class="email"/>
         <input
           type="password"
           placeholder="Heslo"
           bind:value={password}
           required
+          class="password"
         />
-        <button type="submit">Continue</button>
+        <button type="submit">Pokracovat</button>
       </form>
-    {:else if step === "register"}
+    {:else if type === "register"}
       <form on:submit|preventDefault={handleRegisterSubmit}>
-        <h2>Dokoncete registraci</h2>
-        <input type="email" bind:value={email} disabled />
+        <h2>Registrovat se</h2>
+        <input type="email" bind:value={email} 
+          placeholder="email"
+          class="email"
+        />
         <input
           type="password"
           placeholder="Heslo"
           bind:value={password}
           required
+          class="password"
         />
         <input
           type="password"
           placeholder="Podtvrdte Heslo"
           bind:value={passwordConfirm}
           required
+          class="password-again"
         />
-        <input type="text" placeholder="Skola" bind:value={school} required />
-        <button type="submit">Register</button>
+        <input type="text" placeholder="Skola" bind:value={school} required class="school" />
+        <button type="submit">Registrovat</button>
       </form>
     {/if}
     {#if error}
@@ -94,6 +99,7 @@
 
 <style>
   .auth-modal-backdrop {
+    all: unset;
     position: fixed;
     top: 0;
     left: 0;
@@ -110,7 +116,13 @@
     padding: 2rem;
     border-radius: 8px;
     color: #333;
+    width: 450px;
   }
+
+  h2 {
+    margin-top: 0px;
+  }
+
   form {
     display: flex;
     flex-direction: column;
@@ -127,5 +139,22 @@
   }
   form input:active {
     border-bottom: 2px black;
+  }
+
+  .email:hover, .password:hover, .password-again:hover, .school:hover {
+    background-color: #f8f8f8;
+  }
+
+  .email:focus {
+    outline: 3px dashed #EBAD00;
+  }
+  .password:focus {
+    outline: 3px dashed #EB6E00;
+  }
+  .password-again:focus {
+    outline: 3px dashed #EB0072;
+  }
+  .school:focus {
+    outline: 3px dashed #9500EB;
   }
 </style>
