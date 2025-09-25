@@ -17,5 +17,10 @@ export interface Team {
     player3email: string;
     player4email: string;
     player5email: string;
+    player1name: string;
+    player2name: string;
+    player3name: string;
+    player4name: string;
+    player5name: string;
     contest: string;
 }

@@ -20,14 +20,16 @@
 
     export let team: any;
 
-    let players: string[] = [];
+    let players: {name: string, email: string}[] = [];
 
     $: {
-        players[0] = team.player1email;
-        players[1] = team.player2email;
-        players[2] = team.player3email;
-        players[3] = team.player4email;
-        players[4] = team.player5email;
+        players = [
+            {name: team.player1name, email: team.player1email},
+            {name: team.player2name, email: team.player2email},
+            {name: team.player3name, email: team.player3email},
+            {name: team.player4name, email: team.player4email},
+            {name: team.player5name, email: team.player5email},
+        ]
     }
 
     let oppened: boolean = false
@@ -52,7 +54,7 @@
             <h2 class="name">{team.name}</h2>
             <ul class="player-list">
                 {#each players as player, i}
-                    {#if player}<li><div class="dot" style="animation-delay:-{players.length - i}s"></div>{player}</li>{/if}
+                    {#if player.email || player.name}<li class="player-item"><div class="dot" style="animation-delay:-{players.length - i}s"></div><span class="player-name">{player.name}</span><span class="player-email">{player.email}</span></li>{/if}
                 {/each}
             </ul>
         </div>
@@ -161,6 +163,20 @@
         align-items: center;
         gap: 10px;
 
+    }
+
+    .player-item {
+        display: flex;
+        gap: 20px;
+    }
+
+    .player-name {
+        font-weight: 600;
+        width: 150px;
+    }
+
+    .player-email {
+        color: #555;
     }
     
     .dot {

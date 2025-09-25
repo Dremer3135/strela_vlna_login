@@ -14,6 +14,11 @@
   let player3email = "";
   let player4email = "";
   let player5email = "";
+  let player1name = "";
+  let player2name = "";
+  let player3name = "";
+  let player4name = "";
+  let player5name = "";
   let error = "";
 
   onMount(() => {
@@ -37,6 +42,11 @@
         player3email,
         player4email,
         player5email,
+        player1name,
+        player2name,
+        player3name,
+        player4name,
+        player5name,
         contest: contest.id,
         teacher: $authStore?.id,
       });
@@ -55,10 +65,15 @@
     <form on:submit|preventDefault={handleAddTeam}>
       <input class="team-name" type="text" placeholder="Nazev tymu" bind:value={name} required />
       <input class="email1" type="email" placeholder="Email hrace 1" bind:value={player1email} />
+      <input class="email1" type="text" placeholder="Jmeno hrace 1" bind:value={player1name} />
       <input class="email2" type="email" placeholder="Email hrace 2" bind:value={player2email} />
+      <input class="email2" type="text" placeholder="Jmeno hrace 2" bind:value={player2name} />
       <input class="email3" type="email" placeholder="Email hrace 3" bind:value={player3email} />
+      <input class="email3" type="text" placeholder="Jmeno hrace 3" bind:value={player3name} />
       <input class="email4" type="email" placeholder="Email hrace 4" bind:value={player4email} />
+      <input class="email4" type="text" placeholder="Jmeno hrace 4" bind:value={player4name} />
       <input class="email5" type="email" placeholder="Email hrace 5" bind:value={player5email} />
+      <input class="email5" type="text" placeholder="Jmeno hrace 5" bind:value={player5name} />
       <button type="submit">Registrovat</button>
     </form>
     {#if error}

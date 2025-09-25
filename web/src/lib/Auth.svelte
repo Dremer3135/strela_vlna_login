@@ -11,7 +11,45 @@
   let error = "";
   export let type: "login" | "register" = "login";
 
-  async function handleInitialSubmit() {
+  let selectedKraj = "";
+  let selectedOkres = "";
+  let schools: any[] = [];
+
+  const kraje = [
+    { name: "Hlavní město Praha", okresy: ["Praha 1", "Praha 2", "Praha 3", "Praha 4", "Praha 5", "Praha 6", "Praha 7", "Praha 8", "Praha 9", "Praha 10", "Praha 11", "Praha 12", "Praha 13", "Praha 14", "Praha 15", "Praha 16", "Praha 17", "Praha 18", "Praha 19", "Praha 20", "Praha 21", "Praha 22"] },
+    { name: "Jihočeský kraj", okresy: ["České Budějovice", "Český Krumlov", "Jindřichův Hradec", "Písek", "Prachatice", "Strakonice", "Tábor"] },
+    { name: "Jihomoravský kraj", okresy: ["Blansko", "Brno-město", "Brno-venkov", "Břeclav", "Hodonín", "Vyškov", "Znojmo"] },
+    { name: "Karlovarský kraj", okresy: ["Cheb", "Karlovy Vary", "Sokolov"] },
+    { name: "Královéhradecký kraj", okresy: ["Hradec Králové", "Jičín", "Náchod", "Rychnov nad Kněžnou", "Trutnov"] },
+    { name: "Liberecký kraj", okresy: ["Česká Lípa", "Jablonec nad Nisou", "Liberec", "Semily"] },
+    { name: "Moravskoslezský kraj", okresy: ["Bruntál", "Frýdek-Místek", "Karviná", "Nový Jičín", "Opava", "Ostrava-město"] },
+    { name: "Olomoucký kraj", okresy: ["Jeseník", "Olomouc", "Prostějov", "Přerov", "Šumperk"] },
+    { name: "Pardubický kraj", okresy: ["Chrudim", "Pardubice", "Svitavy", "Ústí nad Orlicí"] },
+    { name: "Plzeňský kraj", okresy: ["Domažlice", "Klatovy", "Plzeň-město", "Plzeň-jih", "Plzeň-sever", "Rokycany", "Tachov"] },
+    { name: "Středočeský kraj", okresy: ["Benešov", "Beroun", "Kladno", "Kolín", "Kutná Hora", "Mělník", "Mladá Boleslav", "Nymburk", "Praha-východ", "Praha-západ", "Příbram", "Rakovník"] },
+    { name: "Ústecký kraj", okresy: ["Děčín", "Chomutov", "Litoměřice", "Louny", "Most", "Teplice", "Ústí nad Labem"] },
+    { name: "Kraj Vysočina", okresy: ["Havlíčkův Brod", "Jihlava", "Pelhřimov", "Třebíč", "Žďár nad Sázavou"] },
+    { name: "Zlínský kraj", okresy: ["Kroměříž", "Uherské Hradiště", "Vsetín", "Zlín"] },
+  ];
+
+  async function fetchSchools() {
+    if (!selectedKraj || !selectedOkres) {
+      schools = [];
+      return;
+    }
+
+    try {
+      const result = await pb.collection("skoly").getFullList({
+        filter: `kraj = "${selectedKraj}" && okres = "${selectedOkres}"`,
+      });
+      schools = result;
+    } catch (err) {
+      console.error("Failed to fetch schools:", err);
+      schools = [];
+    }
+  }
+
+  async function handleLoginSubmit() {
     error = "";
     try {
       await pb.collection("teachers").authWithPassword(email, password);
@@ -20,7 +58,10 @@
     } catch (err: any) {
       if (err.status === 400) {
         error = "Zadane udaje nesedi";
-      } else {
+      } else if (err.status === 403) {
+        error = "Vas ucet zatim neni overeny, ale pracujeme na tom :)";
+      }
+      else {
         error = "Failed to authenticate. Please check your credentials.";
       }
     }
@@ -34,11 +75,12 @@
     }
 
     try {
+      console.log("Registering with school ID:", school);
       await pb.collection("teachers").create({
         email,
         password,
         passwordConfirm,
-        school,
+        skola: school,
       });
 
       // After creating, log them in
@@ -54,7 +96,7 @@
 <div class="auth-modal-backdrop" on:click={() => dispatch("close")}>
   <div class="auth-modal-content" on:click|stopPropagation>
     {#if type === "login"}
-      <form on:submit|preventDefault={handleInitialSubmit}>
+      <form on:submit|preventDefault={handleLoginSubmit}>
         <h2>Prihlasit se</h2>
         <input type="email" placeholder="Email" bind:value={email} required class="email"/>
         <input
@@ -72,6 +114,7 @@
         <input type="email" bind:value={email} 
           placeholder="email"
           class="email"
+          required
         />
         <input
           type="password"
@@ -87,7 +130,26 @@
           required
           class="password-again"
         />
-        <input type="text" placeholder="Skola" bind:value={school} required class="school" />
+        <select bind:value={selectedKraj} class="school" on:change={() => {selectedOkres = ""}}>
+          <option value="">Vyberte kraj</option>
+          {#each kraje as kraj}
+            <option value={kraj.name}>{kraj.name}</option>
+          {/each}
+        </select>
+        <select bind:value={selectedOkres} class="school" on:change={fetchSchools} disabled={!selectedKraj}>
+          <option value="">Vyberte okres</option>
+          {#if selectedKraj}
+            {#each kraje.find(k => k.name === selectedKraj)?.okresy ?? [] as okres}
+              <option value={okres}>{okres}</option>
+            {/each}
+          {/if}
+        </select>
+        <select bind:value={school} class="school" disabled={!selectedOkres || schools.length === 0}>
+          <option value="">Vyberte školu</option>
+          {#each schools as s}
+            <option value={s.id}>{s.plny_nazev}</option>
+          {/each}
+        </select>
         <button type="submit">Registrovat</button>
       </form>
     {/if}
@@ -139,6 +201,11 @@
   }
   form input:active {
     border-bottom: 2px black;
+  }
+
+  select {
+    all: unset;
+    padding: 10px 5px;
   }
 
   .email:hover, .password:hover, .password-again:hover, .school:hover {

@@ -1,21 +1,19 @@
 /// <reference path="../pb_data/types.d.ts" />
 migrate((app) => {
-  const collection = app.findCollectionByNameOrId("pbc_3762977101")
+  const collection = app.findCollectionByNameOrId("743x1hijt9924v2")
 
   // update collection data
   unmarshal({
-    "listRule": "",
-    "viewRule": ""
+    "authRule": "verified=true"
   }, collection)
 
   return app.save(collection)
 }, (app) => {
-  const collection = app.findCollectionByNameOrId("pbc_3762977101")
+  const collection = app.findCollectionByNameOrId("743x1hijt9924v2")
 
   // update collection data
   unmarshal({
-    "listRule": null,
-    "viewRule": null
+    "authRule": ""
   }, collection)
 
   return app.save(collection)
