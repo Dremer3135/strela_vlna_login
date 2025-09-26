@@ -30,18 +30,18 @@
   {#if showAuth}
     <Auth on:close={() => (showAuth = false)} type={authType} />
   {/if}
-
+<!-- 
   {#if showTeamsPanel}
     <TeamsPanel 
       on:close={() => (showTeamsPanel = false)} 
       on:showAddTeam={() => (showAddTeam = true)}
       on:showTeamDetails={(e) => {selectedTeam = e.detail; showTeamDetails = true;}}
     />
-  {/if}
-
+  {/if} -->
+<!-- 
   {#if showAddTeam}
       <AddTeamModal on:close={() => (showAddTeam = false)} />
-  {/if}
+  {/if} -->
 
   {#if showTeamDetails}
       <TeamDetailsModal team={selectedTeam} on:close={() => (showTeamDetails = false)} />

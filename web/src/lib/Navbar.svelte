@@ -36,7 +36,9 @@
 </script>
 
 <main class:logged-in={currentUser && pb.authStore.isValid && currentUser?.verified}>
-    <img src={logo} alt="Strela Vlna Logo">
+    <a href="/">
+        <img src={logo} alt="Strela Vlna Logo">
+    </a>
     <div class="right-section">
         {#if currentUser && pb.authStore.isValid && currentUser?.verified}
             <button class="logout" on:click={logout}>Logout</button>

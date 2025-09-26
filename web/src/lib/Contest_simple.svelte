@@ -1,5 +1,7 @@
 <script lang="ts">
   import type { Contest, Team } from "./types";
+  import { pb } from "../lib/pocketbase";
+
   import block_orange from "../assets/block_orange.svg";
   import block_yellow from "../assets/block_yellow.svg";
   import block_purple from "../assets/block_purple.svg";
@@ -17,13 +19,13 @@
   let showAddTeamModal = false;
 
   function openAddTeamModal() {
-    if ($authStore) {
+    if ($authStore && pb.authStore.isValid && $authStore?.verified) {
       showAddTeamModal = true;
     }
   }
 
   async function handleTeamCreated() {
-    if ($authStore) {
+    if ($authStore && pb.authStore.isValid && $authStore?.verified) {
       await fetchTeams($authStore.id);
     }
   }
@@ -94,7 +96,7 @@
   <div class="contest-container" on:click={openAddTeamModal}>
     <div class="tooltip">
       <h3>
-        {#if $authStore}
+        {#if $authStore && pb.authStore.isValid && $authStore?.verified}
           Zaregistrovat tym
         {:else}
           Pro registraci tymu se přihlaste
