@@ -75,7 +75,7 @@
         let remaining_hr_str: string = remaining_hr < 10 ? "0" + remaining_hr.toString() : remaining_hr.toString();
         let remaining_day_str: string = remaining_day.toString();
 
-        remaining_new_str[i] = remaining_day_str + " dni " + remaining_hr_str + ":" + remaining_min_str + ":" + remaining_sec_str;
+        remaining_new_str[i] = remaining_day_str + " dní " + remaining_hr_str + ":" + remaining_min_str + ":" + remaining_sec_str;
       }
 
       remaining_str.set(remaining_new_str);
@@ -97,9 +97,9 @@
     <div class="tooltip">
       <h3>
         {#if $authStore && pb.authStore.isValid && $authStore?.verified}
-          Zaregistrovat tym
+          Zaregistrovat tým
         {:else}
-          Pro registraci tymu se přihlaste
+          Pro registraci týmu se přihlaste
         {/if}
       </h3>
     </div>
@@ -114,7 +114,7 @@
       <p class="remaining">{$remaining_str[0]}</p>
     </div>
     <div class="date-holder">
-      <p class="date">Prezencni: {dates_str[1]}</p>
+      <p class="date">Prezenční: {dates_str[1]}</p>
       <p class="remaining">{$remaining_str[1]}</p>
     </div>
     <img src={contest.type == "math" ? strela : vlna} class="contest-image">

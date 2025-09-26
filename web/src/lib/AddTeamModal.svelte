@@ -30,7 +30,7 @@
   async function handleAddTeam() {
     error = "";
     if (!name) {
-      error = "Team name is required.";
+      error = "Jméno týmu je potřeba.";
       return;
     }
 
@@ -61,19 +61,19 @@
 
 <div class="modal-backdrop" on:click={() => dispatch("close")}>
   <div class="modal-content" on:click|stopPropagation>
-    <h2 class="title">Registrovat tym do:<br> <span class="contest-name">{contest.name}</span></h2>
+    <h2 class="title">Registrovat tým do:<br> <span class="contest-name">{contest.name}</span></h2>
     <form on:submit|preventDefault={handleAddTeam}>
-      <input class="team-name" type="text" placeholder="Nazev tymu" bind:value={name} required />
-      <input class="email1" type="email" placeholder="Email hrace 1" bind:value={player1email} />
-      <input class="email1" type="text" placeholder="Jmeno hrace 1" bind:value={player1name} />
-      <input class="email2" type="email" placeholder="Email hrace 2" bind:value={player2email} />
-      <input class="email2" type="text" placeholder="Jmeno hrace 2" bind:value={player2name} />
-      <input class="email3" type="email" placeholder="Email hrace 3" bind:value={player3email} />
-      <input class="email3" type="text" placeholder="Jmeno hrace 3" bind:value={player3name} />
-      <input class="email4" type="email" placeholder="Email hrace 4" bind:value={player4email} />
-      <input class="email4" type="text" placeholder="Jmeno hrace 4" bind:value={player4name} />
-      <input class="email5" type="email" placeholder="Email hrace 5" bind:value={player5email} />
-      <input class="email5" type="text" placeholder="Jmeno hrace 5" bind:value={player5name} />
+      <input class="team-name" type="text" placeholder="Název týmu" bind:value={name} required />
+      <input class="email1" type="email" placeholder="Email hráče 1" bind:value={player1email} />
+      <input class="email1" type="text" placeholder="Jméno hráče 1" bind:value={player1name} />
+      <input class="email2" type="email" placeholder="Email hráče 2" bind:value={player2email} />
+      <input class="email2" type="text" placeholder="Jméno hráče 2" bind:value={player2name} />
+      <input class="email3" type="email" placeholder="Email hráče 3" bind:value={player3email} />
+      <input class="email3" type="text" placeholder="Jméno hráče 3" bind:value={player3name} />
+      <input class="email4" type="email" placeholder="Email hráče 4" bind:value={player4email} />
+      <input class="email4" type="text" placeholder="Jméno hráče 4" bind:value={player4name} />
+      <input class="email5" type="email" placeholder="Email hráče 5" bind:value={player5email} />
+      <input class="email5" type="text" placeholder="Jméno hráče 5" bind:value={player5name} />
       <button type="submit">Registrovat</button>
     </form>
     {#if error}

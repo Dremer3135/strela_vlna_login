@@ -57,9 +57,9 @@
       dispatch("close");
     } catch (err: any) {
       if (err.status === 400) {
-        error = "Zadane udaje nesedi";
+        error = "Zadané údaje nesedí";
       } else if (err.status === 403) {
-        error = "Vas ucet zatim neni overeny, ale pracujeme na tom :)";
+        error = "Váš účet zatím není ověřený, ale pracujeme na tom :)";
       }
       else {
         error = "Failed to authenticate. Please check your credentials.";
@@ -97,7 +97,7 @@
   <div class="auth-modal-content" on:click|stopPropagation>
     {#if type === "login"}
       <form on:submit|preventDefault={handleLoginSubmit}>
-        <h2>Prihlasit se</h2>
+        <h2>Přihlásit se</h2>
         <input type="email" placeholder="Email" bind:value={email} required class="email"/>
         <input
           type="password"
@@ -106,7 +106,7 @@
           required
           class="password"
         />
-        <button type="submit">Pokracovat</button>
+        <button type="submit">Pokračovat</button>
       </form>
     {:else if type === "register"}
       <form on:submit|preventDefault={handleRegisterSubmit}>
@@ -125,7 +125,7 @@
         />
         <input
           type="password"
-          placeholder="Podtvrdte Heslo"
+          placeholder="Potvrďte heslo"
           bind:value={passwordConfirm}
           required
           class="password-again"
