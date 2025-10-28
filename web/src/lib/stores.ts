@@ -8,7 +8,7 @@ export const authStore = writable<RecordModel | null>(null);
 
 // Contests Store
 export const contestsStore = readable<Contest[]>([], (set) => {
-    pb.collection('contests').getFullList<Contest>({ sort: '-created' })
+    pb.collection('contests').getFullList<Contest>({ sort: '-created', filter: 'public = true' })
         .then(contests => {
             set(contests);
         })
