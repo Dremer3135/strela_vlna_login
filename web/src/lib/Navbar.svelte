@@ -37,7 +37,7 @@
 
 <main class:logged-in={currentUser && pb.authStore.isValid && currentUser?.verified}>
     <a href="/">
-        <img src={logo} alt="Strela Vlna Logo">
+        <img src={logo} alt="Strela Vlna Logo" class="logo">
     </a>
     <div class="right-section">
         {#if currentUser && pb.authStore.isValid && currentUser?.verified}
@@ -143,6 +143,21 @@
         flex-direction: row;
         gap: 5px;
     }
-
+    @media (max-width: 1100px){
+        main{
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding-top: 30px;
+            padding-bottom: 30px;
+            height: auto;
+        }
+    }
+    @media (max-width: 600px){
+        .logo, .right-section{
+            max-width: 80vw;
+        }
+    }
 
 </style>

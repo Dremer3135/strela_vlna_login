@@ -107,17 +107,17 @@
     <img src={block_yellow} alt="" class="block" id="block-yellow" />
     <img src={block_purple} alt="" class="block" id="block-purple" />
     <img src={block_pink} alt="" class="block" id="block-pink" />
-    <div class="contest-name">{contest.name}</div>
-    <div class="contest-type">{contest.type == "math" ? "Matematika" : "Fyzika"}</div>
-    <div class="date-holder">
+    <div class="contest-name contest-element">{contest.name}</div>
+    <div class="contest-type contest-element">{contest.type == "math" ? "Matematika" : "Fyzika"}</div>
+    <div class="date-holder date-1 contest-element">
       <p class="date">Online: {dates_str[0]}</p>
       <p class="remaining">{$remaining_str[0]}</p>
     </div>
-    <div class="date-holder">
+    <div class="date-holder date-2 contest-element">
       <p class="date">Prezenční: {dates_str[1]}</p>
       <p class="remaining">{$remaining_str[1]}</p>
     </div>
-    <img src={contest.type == "math" ? strela : vlna} class="contest-image">
+    <img src={contest.type == "math" ? strela : vlna} class="contest-image contest-element">
   </div>
   
   <div class="registered-team-container">
@@ -130,11 +130,16 @@
 <style>
   main {
     width: 100%;
-    display: flex;
+    display: grid;
     flex-direction: column;
     color: black;
   }
-
+  .contest-name{grid-area: name}
+  .contest-type{grid-area: type}
+  .date-1{grid-area: date-1}
+  .date-2{grid-area: date-2}
+  .contest-image{grid-area: image}
+  
   .tooltip {
     position: absolute;
     top: -40px; /* Final position */
@@ -169,7 +174,7 @@
   }
 
   .contest-container {
-    display: flex;
+    display: grid;
     justify-content: space-between;
     align-items: center;
     background-color: #f9f9f9;
@@ -183,12 +188,17 @@
     outline-offset: 0px;
     outline: 5px dashed transparent;
     cursor: pointer;
+    grid-template: 'name type date-1 date-2 image';
   }
 
   .contest-container:hover {
     outline-color: #9500EB;
     animation: outline-animation 4s steps(1, end) infinite;
 
+  }
+
+  .contest-element {
+    margin-inline: 20px;
   }
 
   .block {
@@ -288,6 +298,36 @@
     75% {
       background-color: #EBAD00;
     }
+  }
+
+  @media (max-width: 1100px){
+    .contest-container {
+      display: grid;
+      justify-items: center;
+      grid-template: 
+        'name type'
+        'date-1 date-2'
+        'image image';
+    }
+    .contest-element {
+      text-align: center;
+      margin-inline: 20px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+  @media (max-width: 600px){
+    .contest-container {
+      display: grid;
+      justify-items: center;
+      grid-template: 
+        'name'
+        'type'
+        'date-1'
+        'date-2'
+        'image';
+    }
+    
   }
 
 </style>

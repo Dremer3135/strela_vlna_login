@@ -105,4 +105,14 @@
     top: 55px;
     left: -20px;
   }
+  @media (max-width: 600px) {
+    .upcomming {
+      font-size: 30px;
+      margin-bottom: 50px;
+      margin-left: 20px;
+    }
+    .logout-page {
+      padding: 40px;
+    }
+  }
 </style>
